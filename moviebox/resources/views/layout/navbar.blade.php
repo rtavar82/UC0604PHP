@@ -52,7 +52,7 @@
                         </li>
                         {{--Autores--}}
                         <li class="nav-item">
-                            <a class="nav-link" href="{{route('admin.authors.index')}}">
+                            <a class="nav-link" href="{{route('admin.actors.index')}}">
                                 <i class="bi bi-file-earmark-person"></i>
                                 Atores
                             </a>
@@ -66,6 +66,20 @@
                         </li>
                     @endrole
                     @role('editor')
+                    {{--Movies--}}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('editor.movies.index')}}">
+                            <i class="bi bi-camera-reels me-1"></i>
+                            Filmes
+                        </a>
+                    </li>
+                    {{--Autores--}}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('editor.actors.index')}}">
+                            <i class="bi bi-file-earmark-person"></i>
+                            Atores
+                        </a>
+                    </li>
                         {{--Generos--}}
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('editor.genres.index')}}">
@@ -75,7 +89,20 @@
                         </li>
                     @endrole
                     @role('user')
-
+                    {{--Movies--}}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('user.movies.index')}}">
+                            <i class="bi bi-camera-reels me-1"></i>
+                            Filmes
+                        </a>
+                    </li>
+                    {{--Autores--}}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('user.actors.index')}}">
+                            <i class="bi bi-file-earmark-person"></i>
+                            Atores
+                        </a>
+                    </li>
                         {{--Generos--}}
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('user.genres.index')}}">

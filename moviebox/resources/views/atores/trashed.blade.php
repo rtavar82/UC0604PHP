@@ -6,23 +6,22 @@
 
         <div>
             <h1 class="h3 mb-1">
-                Atores
+                Atores eliminados
             </h1>
 
             <p class="text-secondary mb-0">
-                Lista de atores disponíveis.
+                Lista de atores eliminados.
             </p>
         </div>
 
-        @hasanyrole('admin|editor')
-        <a href="{{ route($area . '.actors.create') }}"
-           class="btn btn-primary">
-            <i class="bi bi-plus-lg me-1"></i>
-            Novo Ator
+        <a href="{{ route('admin.actors.index') }}"
+           class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-1"></i>
+            Voltar
         </a>
-        @endhasanyrole
 
     </div>
+
 
     <div class="card shadow-sm">
 
@@ -38,7 +37,7 @@
                         <th>Nome</th>
                         <th>Nacionalidade</th>
                         <th>Data de nascimento</th>
-                        <th>Filmes</th>
+                        <th>Eliminado em</th>
                         <th class="text-end table-actions">Ações</th>
                     </tr>
                     </thead>
@@ -48,6 +47,7 @@
                     @forelse($actors as $actor)
 
                         <tr>
+
                             <td>{{ $actor->id }}</td>
 
                             <td>{{ $actor->name }}</td>
@@ -61,41 +61,47 @@
                             </td>
 
                             <td>
-                                {{ $actor->movies_count }}
+                                {{ $actor->deleted_at->format('d/m/Y H:i') }}
                             </td>
 
                             <td class="text-end table-actions">
 
-                                <a href="{{ route($area . '.actors.show', $actor) }}"
-                                   class="btn btn-sm btn-outline-secondary"
-                                   title="Ver">
-                                    <i class="bi bi-eye"></i>
-                                </a>
+                                <form
+                                    action="{{ route('admin.actors.restore', $actor->id) }}"
+                                    method="POST"
+                                    style="display: contents;"
+                                >
+                                    @csrf
+                                    @method('PATCH')
 
-                                @hasanyrole('admin|editor')
-                                <a href="{{ route($area . '.actors.edit', $actor) }}"
-                                   class="btn btn-sm btn-outline-primary"
-                                   title="Editar">
-                                    <i class="bi bi-pencil"></i>
-                                </a>
-                                @endhasanyrole
+                                    <button
+                                        type="submit"
+                                        class="btn btn-sm btn-outline-success"
+                                        title="Restaurar"
+                                    >
+                                        <i class="bi bi-arrow-counterclockwise"></i>
+                                    </button>
 
-                                @role('admin')
-                                <form action="{{ route('admin.actors.destroy', $actor) }}"
-                                      method="POST"
-                                      style="display: contents;">
+                                </form>
+
+
+                                <form
+                                    action="{{ route('admin.actors.force-delete', $actor->id) }}"
+                                    method="POST"
+                                    style="display: contents;"
+                                >
                                     @csrf
                                     @method('DELETE')
 
                                     <button
                                         type="submit"
-                                        class="btn btn-sm btn-outline-warning"
-                                        title="Eliminar"
+                                        class="btn btn-sm btn-outline-danger"
+                                        title="Eliminar definitivamente"
                                     >
-                                        <i class="bi bi-trash"></i>
+                                        <i class="bi bi-file-earmark-x"></i>
                                     </button>
+
                                 </form>
-                                @endrole
 
                             </td>
 
@@ -104,8 +110,9 @@
                     @empty
 
                         <tr>
-                            <td colspan="6" class="text-center text-secondary py-4">
-                                Não existem atores.
+                            <td colspan="6"
+                                class="text-center text-secondary py-4">
+                                Não existem atores eliminados.
                             </td>
                         </tr>
 
@@ -122,20 +129,8 @@
     </div>
 
 
-    <div class="d-flex justify-content-between align-items-center mt-3">
-
-        <div>
-            {{ $actors->links() }}
-        </div>
-
-        @role('admin')
-        <a href="{{ route('admin.actors.trashed') }}"
-           class="btn btn-outline-secondary">
-            <i class="bi bi-trash me-1"></i>
-            Atores eliminados
-        </a>
-        @endrole
-
+    <div class="mt-3">
+        {{ $actors->links() }}
     </div>
 
 @endsection

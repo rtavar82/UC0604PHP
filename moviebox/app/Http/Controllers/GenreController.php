@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Genre;
 use Illuminate\Http\Request;
 
+
+/**
+ * ieafoiesfuio
+ * @extends Controller
+ */
 class GenreController extends Controller
 {
     /**
@@ -18,6 +23,7 @@ class GenreController extends Controller
         }else{
             //editor ou user
             $genres = Genre::all();
+
         }
 
 
@@ -34,8 +40,11 @@ class GenreController extends Controller
         return view('generos.create');
     }
 
+
     /**
-     * Store a newly created resource in storage.
+     * ksduygisuyg
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -52,7 +61,9 @@ class GenreController extends Controller
 
 
     /**
-     * Show the form for editing the specified resource.
+     * iutyeroiutyeroi
+     * @param Genre $genre
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\View\View
      */
     public function edit(Genre $genre)
     {

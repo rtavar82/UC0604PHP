@@ -31,16 +31,39 @@
                     </p>
 
                     <div class="d-flex flex-wrap gap-2">
-
-                        <a href="{{route('movies.index')}}" class="btn btn-dark">
+                        @role('admin')
+                        <a href="{{route('admin.movies.index')}}" class="btn btn-dark">
                             <i class="bi bi-camera-reels me-2"></i>
                             Ver Filmes
                         </a>
-
-                        <a href="{{route('genres.index')}}" class="btn btn-outline-dark">
+                        <a href="{{route('admin.genres.index')}}" class="btn btn-outline-dark">
                             <i class="bi bi-tags me-2"></i>
                             Ver Géneros
                         </a>
+                        @endrole
+                        @role('editor')
+                        <a href="{{route('editor.movies.index')}}" class="btn btn-dark">
+                            <i class="bi bi-camera-reels me-2"></i>
+                            Ver Filmes
+                        </a>
+                        <a href="{{route('editor.genres.index')}}" class="btn btn-outline-dark">
+                            <i class="bi bi-tags me-2"></i>
+                            Ver Géneros
+                        </a>
+                        @endrole
+                        @role('user')
+                        <a href="{{route('user.movies.index')}}" class="btn btn-dark">
+                            <i class="bi bi-camera-reels me-2"></i>
+                            Ver Filmes
+                        </a>
+                        <a href="{{route('user.genres.index')}}" class="btn btn-outline-dark">
+                            <i class="bi bi-tags me-2"></i>
+                            Ver Géneros
+                        </a>
+                        @endrole
+
+
+
 
                     </div>
 
@@ -62,6 +85,7 @@
 
 
         <!-- Acessos rápidos -->
+        @role('admin')
         <div class="row g-4">
 
             <!-- Filmes -->
@@ -86,7 +110,7 @@
                         </p>
 
                         <a
-                            href="#"
+                            href="{{route('admin.movies.create')}}"
                             class="btn btn-outline-dark"
                         >
                             Inserir Filme
@@ -122,7 +146,7 @@
                         </p>
 
                         <a
-                            href="genres.html"
+                            href="{{route('admin.genres.create')}}"
                             class="btn btn-outline-dark"
                         >
                             Novo Género
@@ -136,5 +160,6 @@
             </div>
 
         </div>
+        @endrole
 
 @endsection

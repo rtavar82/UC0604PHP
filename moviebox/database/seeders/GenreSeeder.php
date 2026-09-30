@@ -23,6 +23,8 @@ class GenreSeeder extends Seeder
         Genre::create(['name' => 'Romance']);
         Genre::create(['name' => 'Drama']);
 
+        Genre::factory(10)->create();
+
 
     }
 }

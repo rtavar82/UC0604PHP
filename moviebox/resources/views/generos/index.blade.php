@@ -2,105 +2,148 @@
 
 @section('content')
 
+    <div class="d-flex justify-content-between align-items-center mb-4">
 
+        <div>
+            <h1 class="h3 mb-1">
+                Atores
+            </h1>
 
-        <div class="d-flex justify-content-between align-items-center mb-4">
-
-            <div>
-
-                <h1 class="h3 mb-1">
-                    Géneros
-                </h1>
-
-                <p class="text-secondary mb-0">
-                    Lista de géneros disponíveis.
-                </p>
-
-            </div>
-            @role('admin')
-                <a href="{{route('admin.genres.create')}}" class="btn btn-primary">
-                    <i class="bi bi-plus-lg me-1"></i>
-                    Novo Género
-                </a>
-            @endrole
-
+            <p class="text-secondary mb-0">
+                Lista de atores disponíveis.
+            </p>
         </div>
 
+        @hasanyrole('admin|editor')
+        <a href="{{ route($area . '.actors.create') }}"
+           class="btn btn-primary">
+            <i class="bi bi-plus-lg me-1"></i>
+            Novo Ator
+        </a>
+        @endhasanyrole
 
-        <div class="card shadow-sm">
+    </div>
 
-            <div class="card-body">
 
-                <div class="table-responsive">
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
 
-                    <table class="table table-hover align-middle mb-0">
 
-                        <thead>
+    <div class="card shadow-sm">
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle mb-0">
+
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nome</th>
+                        <th>Nacionalidade</th>
+                        <th>Data de nascimento</th>
+                        <th>Filmes</th>
+                        <th class="text-end table-actions">Ações</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+
+                    @forelse($actors as $actor)
+
                         <tr>
-                            <th>#</th>
-                            <th>Nome</th>
-                            @hasanyrole('admin|editor')
-                            <th class="text-end table-actions">Ações</th>
-                            @endhasanyrole
+                            <td>{{ $actor->id }}</td>
+
+                            <td>{{ $actor->name }}</td>
+
+                            <td>
+                                {{ $actor->nationality ?? '-' }}
+                            </td>
+
+                            <td>
+                                {{ $actor->birth_date?->format('d/m/Y') ?? '-' }}
+                            </td>
+
+                            <td>
+                                {{ $actor->movies_count }}
+                            </td>
+
+                            <td class="text-end table-actions">
+
+                                <a href="{{ route($area . '.actors.show', $actor) }}"
+                                   class="btn btn-sm btn-outline-secondary"
+                                   title="Ver">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+
+                                @hasanyrole('admin|editor')
+                                <a href="{{ route($area . '.actors.edit', $actor) }}"
+                                   class="btn btn-sm btn-outline-primary"
+                                   title="Editar">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                @endhasanyrole
+
+                                @role('admin')
+                                <form action="{{ route('admin.actors.destroy', $actor) }}"
+                                      method="POST"
+                                      style="display: contents;">
+                                    @csrf
+                                    @method('DELETE')
+
+                                    <button
+                                        type="submit"
+                                        class="btn btn-sm btn-outline-warning"
+                                        title="Eliminar"
+                                    >
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                                @endrole
+
+                            </td>
 
                         </tr>
-                        </thead>
 
-                        <tbody>
+                    @empty
 
-                        @foreach($genres as $g)
-                            <tr @if($g->trashed()) class="bg-warning" @endif>
-                                <td>{{$g->id}}</td>
-                                <td>{{$g->name}}</td>
-                                @hasanyrole('admin|editor')
-                                <td class="text-end table-actions">
-                                    <a href="{{route($area.'.genres.edit',$g)}}" class="btn btn-sm btn-outline-primary" >
-                                        <i class="bi bi-pencil"></i>
-                                    </a>
-                                    @role('admin')
+                        <tr>
+                            <td colspan="6" class="text-center text-secondary py-4">
+                                Não existem atores.
+                            </td>
+                        </tr>
 
-                                    <form action="{{route('admin.genres.destroy',$g)}}" method="POST" style="display: contents;">
-                                        @csrf
-                                        @method('DELETE')
-                                        @if($g->trashed())
-                                            <button
-                                                type="submit"
-                                                class="btn btn-sm btn-outline-danger"
-                                            >
-                                                <i class="bi bi-file-earmark-x"></i>
-                                            </button>
+                    @endforelse
 
-                                        @else
-                                            <button
-                                                type="submit"
-                                                class="btn btn-sm btn-outline-warning"
-                                            >
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        @endif
+                    </tbody>
 
-                                    </form>
-                                    @endrole
-
-
-                                </td>
-                                @endhasanyrole
-                            </tr>
-                        @endforeach
-
-
-
-
-
-                        </tbody>
-
-                    </table>
-
-                </div>
+                </table>
 
             </div>
 
         </div>
 
+    </div>
+
+
+    <div class="d-flex justify-content-between align-items-center mt-3">
+
+        <div>
+            {{ $actors->links() }}
+        </div>
+
+        @role('admin')
+        <a href="{{ route('admin.actors.trashed') }}"
+           class="btn btn-outline-secondary">
+            <i class="bi bi-trash me-1"></i>
+            Atores eliminados
+        </a>
+        @endrole
+
+    </div>
 
 @endsection
